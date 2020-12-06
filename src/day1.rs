@@ -30,20 +30,20 @@ fn day1p1(input: &Vec<u32>) -> u32 {
 
 #[aoc(day1, part2)]
 fn day1p2(input: &Vec<u32>) -> u32 {
-    let mut top = (0..input.len()).into_iter().map(|i| (i, input[i]));
-    let mut bottom = (0..input.len()).into_iter().map(|i| (i, input[i]));
-    let mut a = top.next().unwrap();
-    let mut b = bottom.next().unwrap();
+    let mut tail = input.iter().enumerate();
+    let mut head = input.iter().enumerate();
+    let mut a = tail.next().unwrap();
+    let mut b = head.next().unwrap();
     loop {
         match (a.1 + b.1 + max(a.1, b.1)).cmp(&2020) {
-            Ordering::Less => b = bottom.next().unwrap(),
+            Ordering::Less => b = head.next().unwrap(),
             Ordering::Greater => {
                 for i in &input[(a.0 + 1)..b.0] {
                     if a.1 + b.1 + i == 2020 {
                         return a.1 * b.1 * *i;
                     }
                 }
-                a = top.next().unwrap()
+                a = tail.next().unwrap()
             }
             Ordering::Equal => return a.1 + b.1 + max(a.1, b.1),
         }
